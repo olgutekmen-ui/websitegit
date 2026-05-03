@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N-X Platform | Sync-Dive Studios</title>
+
+  <style>
+    :root {
+      --bg: #05070d;
+      --panel: rgba(10, 16, 28, 0.72);
+      --cyan: #00eaff;
+      --magenta: #ff2bd6;
+      --green: #7dff4f;
+      --text: #f5f7ff;
+      --muted: #9ca9c9;
+      --line: rgba(255,255,255,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0,234,255,0.18), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(255,43,214,0.16), transparent 30%),
+        radial-gradient(circle at 50% 85%, rgba(125,255,79,0.09), transparent 35%),
+        #05070d;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black, transparent 75%);
+    }
+
+    .page {
+      width: min(1180px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .studio-logo {
+      width: 168px;
+      height: auto;
+      filter: drop-shadow(0 0 18px rgba(0,234,255,0.22));
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.045);
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .copy {
+      text-align: left;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: 0.95;
+      margin: 0 0 20px;
+      letter-spacing: -0.06em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ffffff, var(--cyan), var(--magenta));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.45;
+      max-width: 640px;
+      margin-bottom: 28px;
+    }
+
+    .loop-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1px solid rgba(0,234,255,0.22);
+      background: linear-gradient(135deg, rgba(0,234,255,0.09), rgba(255,43,214,0.07));
+      border-radius: 18px;
+      box-shadow: 0 0 34px rgba(0,234,255,0.08);
+      color: #eafcff;
+      font-weight: 650;
+    }
+
+    .currency {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(0,234,255,0.45));
+    }
+
+    .hero-art-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 520px;
+    }
+
+    .hero-art-wrap::before {
+      content: "";
+      position: absolute;
+      width: 72%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(0,234,255,0.18), transparent 62%),
+        radial-gradient(circle at 65% 40%, rgba(255,43,214,0.18), transparent 50%);
+      filter: blur(10px);
+    }
+
+    .vyra {
+      position: relative;
+      width: min(520px, 92vw);
+      height: auto;
+      filter:
+        drop-shadow(0 0 22px rgba(0,234,255,0.22))
+        drop-shadow(0 0 32px rgba(255,43,214,0.16));
+    }
+
+    .section {
+      margin-top: 64px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+    }
+
+    .video-box {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background:
+        linear-gradient(135deg, rgba(0,234,255,0.1), rgba(255,43,214,0.08)),
+        #080c14;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      text-align: center;
+      padding: 24px;
+    }
+
+    .video-box iframe,
+    .video-box video {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .feature {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,0.035);
+      text-align: left;
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 8px;
+      color: white;
+      font-size: 17px;
+    }
+
+    .feature span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    footer {
+      margin-top: 44px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 860px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-art-wrap {
+        min-height: 360px;
+        order: -1;
+      }
+
+      .copy {
+        text-align: center;
+      }
+
+      .subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header>
+      <img class="studio-logo" src="assets/logo.png" alt="Sync-Dive Studios logo" />
+      <div class="badge">Working multi-game prototype</div>
+    </header>
+
+    <section class="hero">
+      <div class="copy">
+        <h1>
+          One account.<br />
+          <span class="gradient-text">Multiple games.</span>
+        </h1>
+
+        <p class="subtitle">
+          N-X is a modular ARPG platform where every playable mode feeds the same hero,
+          currency, and account-level progression.
+        </p>
+
+        <div class="loop-card">
+          <span>Play any mode</span>
+          <span>→</span>
+          <span>Earn Aurum</span>
+          <img class="currency" src="assets/aurum.png" alt="Aurum currency icon" />
+          <span>→</span>
+          <span>Upgrade Vyra</span>
+        </div>
+      </div>
+
+      <div class="hero-art-wrap">
+        <img class="vyra" src="assets/vyra.png" alt="Vyra character art" />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="video-box">
+        <!-- Replace this placeholder with your YouTube embed or local video.
+
+        YouTube example:
+        <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+
+        Local video example:
+        <video src="assets/nx-trailer.mp4" controls poster="assets/poster.jpg"></video>
+        -->
+
+        <div>
+          <strong>Trailer / Gameplay proof goes here</strong><br />
+          ARPG → Protocol → Siege → Grid Run → Hub upgrade
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <strong>ARPG core loop</strong>
+          <span>Rift combat, loot, hub upgrades, enemy encounters, and repeatable progression.</span>
+        </div>
+
+        <div class="feature">
+          <strong>Playable satellite modes</strong>
+          <span>Puzzle, runner, strategy, and other modes can all feed the same account.</span>
+        </div>
+
+        <div class="feature">
+          <strong>Unified progression</strong>
+          <span>Rewards earned across modes strengthen the same hero and platform-level economy.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© Sync-Dive Studios AG</div>
+      <div><a href="mailto:info@sync-dive.com">hello@syncdivestudios.com</a></div>
+    </footer>
+  </main>
+</body>
+</html>
